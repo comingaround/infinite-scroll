@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import Infinite from './components/infinite';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('loads images in all sizes correctly', async () => {
+  render(<Infinite />);
+  const images = await screen.findAllByRole('img');
+  images.forEach((img) => {
+    expect(img.src).toMatch(/(_s|_m|_l)/);
+  });
 });
+
+
+

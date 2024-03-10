@@ -15,7 +15,7 @@ function Infinite() {
       if (first.isIntersecting) {
         fetchImages();
       }
-    }, { threshold: 1 });
+    }, { threshold: 0.1 });
 
     const currentLoader = loader.current;
     if (currentLoader) {
@@ -32,13 +32,15 @@ function Infinite() {
   const fetchImages = () => {
     const tags = 'scifi';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,owner_name`;
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name`;
   
     fetch(URL)
       .then(response => response.json())
       .then(data => {
         const newImages = data.photos.photo.map(photo => ({
-          src: photo.url_l, // Use the direct URL to the medium-sized image
+          src_l: photo.url_l, // Large-sized image URL
+          src_m: photo.url_m, // Medium-sized image URL
+          src_s: photo.url_s, // Small-sized image URL
           title: photo.title,
           author: photo.ownername
         }));
@@ -50,12 +52,19 @@ function Infinite() {
       })
       .catch(error => console.log(error));
   };
+  
 
   return (
     <div className="gallery"> {/* Apply gallery class here */}
     {images.map((img, index) => (
       <div key={index} className="image-item"> {/* Apply image-item class here */}
-        <img src={img.src} alt={img.title} />
+        <img 
+          src={img.src_l} 
+          srcSet={`${img.src_s} 640w, ${img.src_m} 1024w, ${img.src_l} 2048w`} 
+          sizes="(max-width: 426px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          alt={img.title}
+          loading="lazy"
+        />
         <div className="credentials">
             <p>Author: {img.author}</p>
             <p>Title: {img.title}</p>

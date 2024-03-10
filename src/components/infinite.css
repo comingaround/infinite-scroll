@@ -3,13 +3,14 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: auto;
+    width: 74%;
 }
 .image-item {
     width: calc(33% - 20px);
     aspect-ratio: 1.5 / 1;
     margin: 10px;
     position: relative;
-    border: 1px solid black;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -43,6 +44,7 @@
 .loader {
     display: flex;
     gap: 4px;
+    margin: 12px 0 24px;
 }
 .loader > div {
     width: 8px;
@@ -67,7 +69,10 @@
 
 @media (max-width: 1024px) {
     .image-item {
-        width: calc(50% - 20px);
+        width: calc(50% - 30px);
+    }
+    .gallery {
+        width: 100%;
     }
 }
 @media (max-width: 426px) {
