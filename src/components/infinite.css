@@ -1,0 +1,19 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
+  
+.image-item {
+    width: calc(33% - 20px);
+    margin: 10px;
+    box-sizing: border-box;
+}
+  
+.image-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+  
