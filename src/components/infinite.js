@@ -60,10 +60,11 @@ function Infinite() {
       <div key={index} className="image-item"> {/* Apply image-item class here */}
         <img 
           src={img.src_l} 
-          srcSet={`${img.src_s} 640w, ${img.src_m} 1024w, ${img.src_l} 2048w`} 
+          srcSet={`${img.src_s} 1024w, ${img.src_m} 1440w, ${img.src_l} 2048w`} 
           sizes="(max-width: 426px) 100vw, (max-width: 1024px) 50vw, 33vw"
           alt={img.title}
           loading="lazy"
+          data-testid="image-item"
         />
         <div className="credentials">
             <p>Author: {img.author}</p>
