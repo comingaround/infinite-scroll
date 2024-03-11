@@ -48,6 +48,8 @@
 }
 .credentials h1 {
     border-bottom: 1px solid white;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
 }
 .credentials h3 {
     font-style: italic;
