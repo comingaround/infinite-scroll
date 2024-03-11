@@ -1,0 +1,29 @@
+.toTop {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+}
+.toTop button {
+    border: none;
+    background-color: transparent;
+}
+@media (max-width: 1024px) {
+    .toTop {
+        bottom: 8px;
+        right: 8px;
+    }
+    .toTop button svg {
+        width: 36px;
+        height: 36px;
+    }
+}
+@media (max-width: 526px) {
+    .toTop {
+        bottom: 8px;
+        right: 0px;
+    }
+    .toTop button svg {
+        width: 32px;
+        height: 32px;
+    }
+}

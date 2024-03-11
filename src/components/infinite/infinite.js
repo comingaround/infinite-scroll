@@ -32,7 +32,6 @@ function Infinite() {
   }, [page, isFetching]);
 
   useEffect(() => {
-    // Load favorites from local storage at component mount
     const loadedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
     const initialFavorites = loadedFavorites.reduce((acc, url) => {
       acc[url] = true;
@@ -47,7 +46,7 @@ function Infinite() {
     setIsFetching(true); 
     const tags = 'scifi-art';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&`;
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&sort=interestingness_desc`;
 
     fetch(URL)
       .then(response => response.json())
@@ -56,7 +55,7 @@ function Infinite() {
           src_l: photo.url_l,
           src_m: photo.url_m,
           src_s: photo.url_s,
-          title: photo.title,
+          title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
           author: photo.ownername
         }));
         setImages(prevImages => [...prevImages, ...newImages]);
@@ -104,7 +103,7 @@ function Infinite() {
             </section>
             <div className='favorite'>
                 {!favorites[img.src_l] ? (
-                  <button onClick={() => saveImageUrlToLocal(img.src_l)}>Add to Favorite</button>
+                  <button onClick={() => saveImageUrlToLocal(img.src_l)}>Add to Favorites</button>
                 ) : (
                   <button disabled>Favorite</button>
                 )}
