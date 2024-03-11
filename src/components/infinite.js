@@ -28,13 +28,15 @@ function Infinite() {
         observer.unobserve(currentLoader);
       }
     };
-  }, []);
+  }, [page]);
 
   const fetchImages = () => {
+    console.log("------");
     const tags = 'scifi';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&sort=date-taken-desc`;
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&sort=interestingness-desc`;
 
+    console.log(page);
     fetch(URL)
       .then(response => response.json())
       .then(data => {
