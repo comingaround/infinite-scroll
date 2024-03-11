@@ -1,5 +1,5 @@
 import React from "react";
-import Infinite from "./components/infinite";
+import Infinite from "./components/infinite/infinite";
 
 function App() {
   return (

@@ -6,9 +6,9 @@
     width: 74%;
 }
 .image-item {
-    width: calc(33% - 20px);
+    width: calc(33% - 40px);
     aspect-ratio: 1.5 / 1;
-    margin: 10px;
+    margin: 20px;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -38,11 +38,13 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 .credentials section {
+    width: 80%;
     padding: 0 20px;
 }
 .credentials h1, h3 {
     text-align: center;
     margin: 4px;
+    text-wrap: wrap;
 }
 .credentials h1 {
     border-bottom: 1px solid white;
@@ -90,13 +92,13 @@
 
 @media (max-width: 1024px) {
     .image-item {
-        width: calc(50% - 30px);
+        width: calc(50% - 40px);
     }
     .gallery {
-        width: 100%;
+        width: 90%;
     }
 }
-@media (max-width: 426px) {
+@media (max-width: 526px) {
     .image-item {
         width: calc(100% - 20px);
     }
