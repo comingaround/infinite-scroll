@@ -45,7 +45,7 @@ function Infinite() {
     if (isFetching) return;
 
     setIsFetching(true); 
-    const tags = 'scifi';
+    const tags = 'scifi-art';
     const perPage = 12;
     const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&`;
 
@@ -86,7 +86,11 @@ function Infinite() {
       <div key={index} className="image-item">
         <img 
           src={img.src_l} 
-          srcSet={`${img.src_s} 526w, ${img.src_m} 1024w, ${img.src_l} 1440w`} 
+          srcSet={`
+            ${img.src_s} 526w, 
+            ${img.src_m} 1024w
+            ${img.src_l ? `, ${img.src_l} 2048w` : ''}
+          `} 
           sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
           alt={img.title}
           loading="lazy"
