@@ -22,8 +22,12 @@
     display: block;
     object-fit: cover;
 }
-.image-item .credentials {
+.credentials {
     position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-flow: column nowrap;
     z-index: 10;
     top: 0;
     left: 0;
@@ -32,6 +36,28 @@
     color: white;
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.3);
+}
+.credentials section {
+    padding: 0 20px;
+}
+.credentials h1, h3 {
+    text-align: center;
+    margin: 4px;
+}
+.credentials h1 {
+    border-bottom: 1px solid white;
+}
+.credentials h3 {
+    font-style: italic;
+    font-weight: 300;
+}
+.favorite button {
+    color: white;
+    background-color: transparent;
+    border: 1px solid white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 1rem;
 }
 .image-item:hover .credentials {
     opacity: 1;
