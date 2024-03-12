@@ -10,6 +10,8 @@ function Infinite() {
   const [isFetching, setIsFetching] = useState(false);
   const [favorites, setFavorites] = useState({});
   const [activeItem, setActiveItem] = useState(null);
+  const [clickCount, setClickCount] = useState(0);
+  const [lastClickTime, setLastClickTime] = useState(0);
   const loader = useRef(null);
 
   useEffect(() => {
@@ -110,62 +112,79 @@ function Infinite() {
 
   return (
     <div className="gallery">
-    {images.map((img, index) => (
-      <div key={index} 
-      className={`image-item ${activeItem === index ? 'is-active' : ''}`} 
-      onClick={() => handleImageClick(index)}
-      >
-        <img 
-          src={img.src_l} 
-          srcSet={`
-            ${img.src_s} 526w, 
-            ${img.src_m} 1024w
-            ${img.src_l ? `, ${img.src_l} 2048w` : ''}
-          `} 
-          sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          alt={img.title}
-          loading="lazy"
-          data-testid="image-item"
-        />
-        <div className="credentials">
-            <span />
-            <section>
-              <h1>{img.title}</h1>
-              <h3>{img.author}</h3>
-            </section>
-            <div className='favorite'>
-              {!favorites[img.src_l] ? (
-                <button onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavoriteStatus(img.src_l);
-                }}>Add to Favorites</button>
-              ) : (
-                <button onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavoriteStatus(img.src_l);
-                }}>Favorites</button>
-              )}
+      {images.map((img, index) => {
+        const imageUrl = img.src_l || img.src_m || img.src_s;
+  
+        return (
+          <div key={index} 
+            className={`image-item ${activeItem === index ? 'is-active' : ''}`} 
+            onClick={() => handleImageClick(index)}
+          >
+            <img 
+              src={img.src_l} 
+              srcSet={`
+                ${img.src_s} 526w, 
+                ${img.src_m} 1024w
+                ${img.src_l ? `, ${img.src_l} 2048w` : ''}
+              `} 
+              sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              alt={img.title}
+              loading="lazy"
+              data-testid="image-item"
+            />
+            <div className="credentials">
+              <span />
+              <section>
+                <h1 onClick={() => {
+                    const currentTime = Date.now();
+                    if (currentTime - lastClickTime < 2000) return;
+                    setLastClickTime(currentTime);
+                    const screenSize = window.innerWidth;
+                    if (screenSize <= 789) {
+                      setClickCount(prevCount => prevCount + 1);
+                      if (clickCount === 1 && imageUrl) {
+                        window.open(imageUrl, '_blank');
+                        setClickCount(0);
+                      }
+                    } else {
+                      if (imageUrl) {
+                        window.open(imageUrl, '_blank');
+                      }
+                      setClickCount(0);
+                    }
+                  }}>{img.title}
+                </h1>
+                <h3>{img.author}</h3>
+              </section>
+              <div className='favorite'>
+                {!favorites[img.src_l] ? (
+                  <button onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavoriteStatus(imageUrl);
+                  }}>Add to Favorites</button>
+                ) : (
+                  <button onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavoriteStatus(imageUrl);
+                  }}>Favorites</button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    ))}
-    {hasMore && <div ref={loader}>
+        );
+      })}
+      {hasMore && <div ref={loader}>
         <div className="loader">
             <div></div>
             <div></div>
             <div></div>
         </div>
-    </div>}
-  </div>
+      </div>}
+    </div>
   );
+  
 }
 
 export default Infinite;
 
 
-// onClick={() => {
-//   const imageUrl = img.src_l || img.src_m || img.src_s;
-//   if (imageUrl) {
-//     window.open(imageUrl, '_blank');
-//   }
-// }}
