@@ -9,6 +9,7 @@ function Infinite() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
   const [favorites, setFavorites] = useState({});
+  const [activeItem, setActiveItem] = useState(null);
   const loader = useRef(null);
 
   useEffect(() => {
@@ -18,12 +19,10 @@ function Infinite() {
         fetchImages();
       }
     }, { threshold: 0.1 });
-
     const currentLoader = loader.current;
     if (currentLoader) {
       observer.observe(currentLoader);
     }
-
     return () => {
       if (currentLoader) {
         observer.unobserve(currentLoader);
@@ -42,7 +41,6 @@ function Infinite() {
 
   const fetchImages = () => {
     if (isFetching) return;
-
     setIsFetching(true); 
     const tags = 'scifi-art';
     const perPage = 12;
@@ -69,20 +67,43 @@ function Infinite() {
       .finally(() => setIsFetching(false));
   };
 
-  const saveImageUrlToLocal = (url) => {
-    const newFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
-    if (!newFavorites.includes(url)) {
-      newFavorites.push(url);
-      localStorage.setItem('favoriteImages', JSON.stringify(newFavorites));
-      setFavorites(prev => ({ ...prev, [url]: true }));
+  const toggleFavoriteStatus = (imgSrc) => {
+    let savedImages = JSON.parse(localStorage.getItem('favoriteImages')) || [];
+    const isFavorite = savedImages.includes(imgSrc);
+  
+    if (isFavorite) {
+      savedImages = savedImages.filter(src => src !== imgSrc);
+    } else {
+      savedImages.push(imgSrc);
     }
-    console.log(url);
+    localStorage.setItem('favoriteImages', JSON.stringify(savedImages));
+    setFavorites(prev => {
+      if (isFavorite) {
+        const updatedFavorites = { ...prev };
+        delete updatedFavorites[imgSrc];
+        return updatedFavorites;
+      } else {
+        return { ...prev, [imgSrc]: true };
+      }
+    });
+  };
+
+  const isTouchDevice = () => {
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+  };
+  const handleImageClick = (index) => {
+      if (isTouchDevice()) {
+          setActiveItem(activeItem === index ? null : index);
+      }
   };
 
   return (
     <div className="gallery">
     {images.map((img, index) => (
-      <div key={index} className="image-item">
+      <div key={index} 
+      className={`image-item ${activeItem === index ? 'is-active' : ''}`} 
+      onClick={() => handleImageClick(index)}
+      >
         <img 
           src={img.src_l} 
           srcSet={`
@@ -97,17 +118,28 @@ function Infinite() {
         />
         <div className="credentials">
             <span />
-            <section>
+            <section onClick={() => {
+              const imageUrl = img.src_l || img.src_m || img.src_s; // Fallback to smaller sizes if larger ones are not available
+              if (imageUrl) {
+                window.open(imageUrl, '_blank'); // Open the first available image size in a new tab
+              }
+            }}>
               <h1>{img.title}</h1>
               <h3>{img.author}</h3>
             </section>
             <div className='favorite'>
-                {!favorites[img.src_l] ? (
-                  <button onClick={() => saveImageUrlToLocal(img.src_l)}>Add to Favorites</button>
-                ) : (
-                  <button disabled>Favorite</button>
-                )}
-            </div>
+              {!favorites[img.src_l] ? (
+                <button onClick={(e) => {
+                  e.stopPropagation(); // Prevent section click handler when clicking the button
+                  toggleFavoriteStatus(img.src_l);
+                }}>Add to Favorites</button>
+              ) : (
+                <button onClick={(e) => {
+                  e.stopPropagation(); // Prevent section click handler when clicking the button
+                  toggleFavoriteStatus(img.src_l);
+                }}>Favorites</button>
+              )}
+          </div>
         </div>
       </div>
     ))}
