@@ -15,6 +15,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
 } 
 .image-item img {
     width: 100%;
@@ -29,7 +30,6 @@
     justify-content: space-around;
     align-items: center;
     flex-flow: column nowrap;
-    z-index: 10;
     top: 0;
     left: 0;
     width: 100%;

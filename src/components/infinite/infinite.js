@@ -41,21 +41,31 @@ function Infinite() {
 
   const fetchImages = () => {
     if (isFetching) return;
+  
     setIsFetching(true); 
     const tags = 'scifi-art';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_l,url_m,url_s,owner_name&sort=interestingness_desc`;
-
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_s,url_m,url_l,width_s,height_s,width_m,height_m,width_l,height_l,owner_name&sort=interestingness_desc`;
+  
     fetch(URL)
       .then(response => response.json())
       .then(data => {
-        const newImages = data.photos.photo.map(photo => ({
-          src_l: photo.url_l,
-          src_m: photo.url_m,
-          src_s: photo.url_s,
-          title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
-          author: photo.ownername
-        }));
+        const newImages = data.photos.photo.map(photo => {
+          console.log(`Image dimensions - Small: ${photo.width_s}x${photo.height_s}, Medium: ${photo.width_m}x${photo.height_m}, Large: ${photo.width_l}x${photo.height_l}`);
+          return {
+            src_s: photo.url_s,
+            width_s: photo.width_s,
+            height_s: photo.height_s,
+            src_m: photo.url_m,
+            width_m: photo.width_m,
+            height_m: photo.height_m,
+            src_l: photo.url_l,
+            width_l: photo.width_l,
+            height_l: photo.height_l,
+            title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
+            author: photo.ownername,
+          };
+        });
         setImages(prevImages => [...prevImages, ...newImages]);
         setPage(prevPage => prevPage + 1);
         console.log(page);
@@ -66,6 +76,7 @@ function Infinite() {
       .catch(error => console.log(error))
       .finally(() => setIsFetching(false));
   };
+  
 
   const toggleFavoriteStatus = (imgSrc) => {
     let savedImages = JSON.parse(localStorage.getItem('favoriteImages')) || [];
@@ -118,24 +129,19 @@ function Infinite() {
         />
         <div className="credentials">
             <span />
-            <section onClick={() => {
-              const imageUrl = img.src_l || img.src_m || img.src_s; // Fallback to smaller sizes if larger ones are not available
-              if (imageUrl) {
-                window.open(imageUrl, '_blank'); // Open the first available image size in a new tab
-              }
-            }}>
+            <section>
               <h1>{img.title}</h1>
               <h3>{img.author}</h3>
             </section>
             <div className='favorite'>
               {!favorites[img.src_l] ? (
                 <button onClick={(e) => {
-                  e.stopPropagation(); // Prevent section click handler when clicking the button
+                  e.stopPropagation();
                   toggleFavoriteStatus(img.src_l);
                 }}>Add to Favorites</button>
               ) : (
                 <button onClick={(e) => {
-                  e.stopPropagation(); // Prevent section click handler when clicking the button
+                  e.stopPropagation();
                   toggleFavoriteStatus(img.src_l);
                 }}>Favorites</button>
               )}
@@ -155,3 +161,11 @@ function Infinite() {
 }
 
 export default Infinite;
+
+
+// onClick={() => {
+//   const imageUrl = img.src_l || img.src_m || img.src_s;
+//   if (imageUrl) {
+//     window.open(imageUrl, '_blank');
+//   }
+// }}
