@@ -11,9 +11,9 @@ function Infinite() {
   const [favorites, setFavorites] = useState({});
   const [activeItem, setActiveItem] = useState(null);
   const [clickCount, setClickCount] = useState(0);
-  const [lastClickTime, setLastClickTime] = useState(0);
   const loader = useRef(null);
 
+  // loader
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       const first = entries[0];
@@ -32,15 +32,7 @@ function Infinite() {
     };
   }, [page, isFetching]);
 
-  useEffect(() => {
-    const loadedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
-    const initialFavorites = loadedFavorites.reduce((acc, url) => {
-      acc[url] = true;
-      return acc;
-    }, {});
-    setFavorites(initialFavorites);
-  }, []);
-
+  // fetching
   const fetchImages = () => {
     if (isFetching) return;
   
@@ -79,11 +71,19 @@ function Infinite() {
       .finally(() => setIsFetching(false));
   };
   
+  // favorites
+  useEffect(() => {
+    const loadedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
+    const initialFavorites = loadedFavorites.reduce((acc, url) => {
+      acc[url] = true;
+      return acc;
+    }, {});
+    setFavorites(initialFavorites);
+  }, []);
 
   const toggleFavoriteStatus = (imgSrc) => {
     let savedImages = JSON.parse(localStorage.getItem('favoriteImages')) || [];
     const isFavorite = savedImages.includes(imgSrc);
-  
     if (isFavorite) {
       savedImages = savedImages.filter(src => src !== imgSrc);
     } else {
@@ -101,6 +101,7 @@ function Infinite() {
     });
   };
 
+  // "hover" for small screens
   const isTouchDevice = () => {
     return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
   };
@@ -136,9 +137,6 @@ function Infinite() {
               <span />
               <section>
                 <h1 onClick={() => {
-                    const currentTime = Date.now();
-                    if (currentTime - lastClickTime < 2000) return;
-                    setLastClickTime(currentTime);
                     const screenSize = window.innerWidth;
                     if (screenSize <= 789) {
                       setClickCount(prevCount => prevCount + 1);

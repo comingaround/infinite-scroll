@@ -52,16 +52,7 @@
     padding-bottom: 8px;
     margin-bottom: 8px;
     cursor: pointer;
-    /* user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none; */
 }
-/* .credentials h1:focus,
-.credentials h1:active,
-.credentials h1:hover {
-    background-color: transparent;
-} */
 .credentials h3 {
     font-style: italic;
     font-weight: 300;
