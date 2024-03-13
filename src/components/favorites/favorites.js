@@ -5,15 +5,23 @@ import ToTop from "../toTop/toTop";
 function Favorites() {
     const [favorites, setFavorites] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
-    const toggleFavoritesVisibility = () => {
-        setIsVisible(!isVisible);
-    };
 
-    useEffect(() => {
+    // Function to fetch favorites from local storage
+    const fetchFavorites = () => {
         const savedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
         setFavorites(savedFavorites);
-    }, []);
+    };
 
+    // Toggle visibility and fetch favorites
+    const toggleFavoritesVisibility = () => {
+        setIsVisible(!isVisible);
+        fetchFavorites(); // Re-fetch favorites each time visibility changes
+    };
+
+    // Initial fetch of favorites on component mount
+    useEffect(() => {
+        fetchFavorites();
+    }, []);
 
     return (
         <>
@@ -26,11 +34,11 @@ function Favorites() {
                 <ToTop />
             </div>
             <div className="favorites_array" style={{display: isVisible ? 'flex' : 'none'}}>
-                    {favorites.map((imgSrc, index) => (
-                        <div className="favorites_list">
-                            <img key={index} src={imgSrc} alt={`Favorite ${index}`} />
-                        </div>
-                    ))}
+                {favorites.map((imgSrc, index) => (
+                    <div className="favorites_list" key={index}>
+                        <img src={imgSrc} alt={`Favorite ${index}`} />
+                    </div>
+                ))}
             </div>
         </>
     );
