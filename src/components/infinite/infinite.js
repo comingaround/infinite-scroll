@@ -171,7 +171,7 @@ function Infinite() {
           </div>
         );
       })}
-      {hasMore && <div ref={loader}>
+      {hasMore && <div ref={loader} data-testid="observer">
         <div className="loader">
             <div></div>
             <div></div>
