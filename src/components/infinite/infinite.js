@@ -114,7 +114,7 @@ function Infinite() {
   return (
     <div className="gallery">
       {images.map((img, index) => {
-        const imageUrl = img.src_l || img.src_m || img.src_s;
+        const imageUrl = img.src_o || img.src_l || img.src_m || img.src_s;
   
         return (
           <div key={index} 
@@ -122,11 +122,11 @@ function Infinite() {
             onClick={() => handleImageClick(index)}
           >
             <img 
-              src={img.src_l} 
+              src={img.src_l || img.src_o}
               srcSet={`
                 ${img.src_s} 526w, 
                 ${img.src_m} 1024w
-                ${img.src_l ? `, ${img.src_l} 2048w` : ''}
+                ${img.src_l ? `, ${img.src_l} 2048w` : img.src_o ? `, ${img.src_o} 2048w` : ''}
               `} 
               sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={img.title}
