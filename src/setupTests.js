@@ -5,5 +5,7 @@
 import '@testing-library/jest-dom';
 import { configMocks } from 'jsdom-testing-mocks';
 import { act } from '@testing-library/react';
+import fetchMock from 'jest-fetch-mock';
 
 configMocks({ act });
+fetchMock.enableMocks();
