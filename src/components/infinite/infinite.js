@@ -39,13 +39,13 @@ function Infinite() {
     setIsFetching(true); 
     const tags = 'scifi-art';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_s,url_m,url_l,width_s,height_s,width_m,height_m,width_l,height_l,owner_name&sort=interestingness_desc`;
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_s,url_m,url_l,url_o,url,width_s,height_s,width_m,height_m,width_l,height_l,width_o,height_o,owner_name&sort=interestingness_desc`;
   
     fetch(URL)
       .then(response => response.json())
       .then(data => {
         const newImages = data.photos.photo.map(photo => {
-          console.log(`Image dimensions - Small: ${photo.width_s}x${photo.height_s}, Medium: ${photo.width_m}x${photo.height_m}, Large: ${photo.width_l}x${photo.height_l}`);
+          console.log(`Image dimensions - Small: ${photo.width_s}x${photo.height_s}, Medium: ${photo.width_m}x${photo.height_m}, Large: ${photo.width_l}x${photo.height_l}, Default: ${photo.width_o}x${photo.height_o}, Title ${photo.title}`);
           return {
             src_s: photo.url_s,
             width_s: photo.width_s,
@@ -56,6 +56,9 @@ function Infinite() {
             src_l: photo.url_l,
             width_l: photo.width_l,
             height_l: photo.height_l,
+            src_o: photo.url_o,
+            width_o: photo.width_o,
+            height_o: photo.height_o,
             title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
             author: photo.ownername,
           };
@@ -115,7 +118,7 @@ function Infinite() {
   return (
     <div className="gallery">
       {images.map((img, index) => {
-        const imageUrl = img.src_o || img.src_l || img.src_m || img.src_s;
+        const imageUrl = img.src_l || img.src_o || img.src_m || img.src_s;
   
         return (
           <div key={index} 
@@ -156,7 +159,7 @@ function Infinite() {
                 <h3>{img.author}</h3>
               </section>
               <div className='favorite'>
-                {!favorites[img.src_l] ? (
+                {!favorites[img.src_l || img.src_o || img.src_m || img.src_s] ? (
                   <button onClick={(e) => {
                     e.stopPropagation();
                     toggleFavoriteStatus(imageUrl);
