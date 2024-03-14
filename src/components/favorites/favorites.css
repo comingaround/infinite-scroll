@@ -12,10 +12,6 @@
     border-top-left-radius: 13px;
     border-bottom-left-radius: 13px;
 }
-.favorites > div svg {
-    padding-top: 4px;
-    cursor: pointer;
-}
 .favorites_array {
     display: flex;
     flex-wrap: wrap;
@@ -62,6 +58,10 @@
 .favorites_out span {
     color: white;
     font-size: 24px;
+}
+svg {
+    cursor: pointer;
+    padding-top: 4px;
 }
 @media (max-width: 1560px) {
     .favorites_array {
