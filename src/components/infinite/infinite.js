@@ -114,9 +114,9 @@ function Infinite() {
       }
   };
   
-
+  
   return (
-    <div className="gallery">
+    <div className="gallery" data-testid="image-item">
       {images.map((img, index) => {
         const imageUrl = img.src_l || img.src_o || img.src_m || img.src_s;
   
@@ -135,7 +135,7 @@ function Infinite() {
               sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={img.title}
               loading="lazy"
-              data-testid="image-item"
+              
             />
             <div className="credentials">
               <span />
@@ -183,8 +183,7 @@ function Infinite() {
         </div>
       </div>}
     </div>
-  );
-  
+  ); 
 }
 
 export default Infinite;
