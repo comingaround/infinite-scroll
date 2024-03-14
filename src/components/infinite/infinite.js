@@ -110,6 +110,7 @@ function Infinite() {
           setActiveItem(activeItem === index ? null : index);
       }
   };
+  
 
   return (
     <div className="gallery">
@@ -118,7 +119,7 @@ function Infinite() {
   
         return (
           <div key={index} 
-            className={`image-item ${activeItem === index ? 'is-active' : ''}`} 
+            className={`image-item ${activeItem === index ? 'is-active' : 'not-active'}`} 
             onClick={() => handleImageClick(index)}
           >
             <img 

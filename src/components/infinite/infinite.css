@@ -60,9 +60,7 @@
 .image-item:hover .credentials {
     opacity: 1;
 }
-.image-item.is-active .credentials {
-    opacity: 1;
-}
+
 .favorite button {
     color: white;
     background-color: transparent;
@@ -108,6 +106,14 @@
     }
     .gallery {
         width: 100%;
+    }
+}
+@media (max-width:1023px) {
+    .image-item.is-active .credentials {
+        opacity: 1;
+    }
+    .image-item.not-active .credentials {
+        opacity: 0;
     }
 }
 @media (max-width: 526px) {

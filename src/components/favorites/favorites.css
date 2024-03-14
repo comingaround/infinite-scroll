@@ -14,6 +14,7 @@
 }
 .favorites > div svg {
     padding-top: 4px;
+    cursor: pointer;
 }
 .favorites_array {
     display: flex;
@@ -38,6 +39,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    position: relative;
 }
 .favorites_list img {
     width: 100%;
@@ -46,7 +48,21 @@
     object-fit: cover;
     border-radius: 8px;
 }
-
+.favorites_out {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    z-index: 100;
+    cursor: pointer;
+    opacity: 0;
+}
+.favorites_list:hover .favorites_out{
+    opacity: 1;
+}
+.favorites_out span {
+    color: white;
+    font-size: 24px;
+}
 @media (max-width: 1560px) {
     .favorites_array {
         width: 80%;
@@ -58,6 +74,9 @@
     }
     .favorites_array {
         width: 90%;
+    }
+    .favorites_out {
+        opacity: 1;
     }
 }
 @media (max-width: 526px) {

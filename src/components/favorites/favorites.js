@@ -5,23 +5,22 @@ import ToTop from "../toTop/toTop";
 function Favorites() {
     const [favorites, setFavorites] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
-
-    // Function to fetch favorites from local storage
     const fetchFavorites = () => {
         const savedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
         setFavorites(savedFavorites);
     };
-
-    // Toggle visibility and fetch favorites
     const toggleFavoritesVisibility = () => {
         setIsVisible(!isVisible);
-        fetchFavorites(); // Re-fetch favorites each time visibility changes
+        fetchFavorites();
     };
-
-    // Initial fetch of favorites on component mount
     useEffect(() => {
         fetchFavorites();
     }, []);
+    const removeFavorite = (indexToRemove) => {
+        const updatedFavorites = favorites.filter((_, index) => index !== indexToRemove);
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favoriteImages', JSON.stringify(updatedFavorites));
+      };
 
     return (
         <>
@@ -36,7 +35,15 @@ function Favorites() {
             <div className="favorites_array" style={{display: isVisible ? 'flex' : 'none'}}>
                 {favorites.map((imgSrc, index) => (
                     <div className="favorites_list" key={index}>
-                        <img src={imgSrc} alt={`Favorite ${index}`} />
+                        <a href={imgSrc} target="_blank" rel="noopener noreferrer">
+                            <img src={imgSrc} alt={`Favorite ${index}`} />
+                        </a>
+                        <div className='favorites_out' onClick={(event) => {
+                            event.stopPropagation();
+                            removeFavorite(index);
+                        }}>
+                            <span>&#10008;</span>
+                        </div>
                     </div>
                 ))}
             </div>
