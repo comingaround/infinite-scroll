@@ -25,7 +25,7 @@
 }
 .credentials {
     position: absolute;
-    display: flex;
+    /* display: flex; */
     justify-content: space-around;
     align-items: center;
     flex-flow: column nowrap;
@@ -34,8 +34,8 @@
     width: 100%;
     height: 100%;
     color: white;
-    opacity: 0;
     background-color: rgba(0, 0, 0, 0.3);
+    display: none;
 }
 .credentials section {
     width: 80%;
@@ -57,7 +57,7 @@
     font-weight: 300;
 }
 .image-item:hover .credentials {
-    opacity: 1;
+    display: flex;
 }
 .favorite button {
     color: white;
@@ -108,13 +108,13 @@
 }
 @media (max-width:1023px) {
     .image-item:hover .credentials {
-        opacity: 1;
+        display: flex;
     }
     .image-item.is-active .credentials {
-        opacity: 1;
+        display: flex;
     }
     .image-item.not-active .credentials {
-        opacity: 0;
+        display: none;
     }
 }
 @media (max-width: 526px) {

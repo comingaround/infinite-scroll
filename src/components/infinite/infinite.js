@@ -10,7 +10,6 @@ function Infinite() {
   const [isFetching, setIsFetching] = useState(false);
   const [favorites, setFavorites] = useState({});
   const [activeItem, setActiveItem] = useState(null);
-  const [clickCount, setClickCount] = useState(0);
   const loader = useRef(null);
 
   // loader
@@ -142,21 +141,10 @@ function Infinite() {
               <span />
               <section>
                 <h1 onClick={() => {
-                    const screenSize = window.innerWidth;
-                    if (screenSize <= 789) {
-                      setClickCount(prevCount => prevCount + 1);
-                      if (clickCount === 1 && imageUrl) {
-                        window.open(imageUrl, '_blank');
-                        setClickCount(0);
-                      }
-                    } else {
-                      if (imageUrl) {
-                        window.open(imageUrl, '_blank');
-                      }
-                      setClickCount(0);
-                    }
-                  }}>{img.title}
-                </h1>
+                  if (imageUrl) {
+                    window.open(imageUrl, '_blank');
+                  }
+                }}>{img.title}</h1>
                 <h3>{img.author}</h3>
               </section>
               <div className='favorite'>
