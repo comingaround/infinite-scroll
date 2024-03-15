@@ -116,7 +116,7 @@ function Infinite() {
   
   
   return (
-    <div className="gallery" data-testid="image-item">
+    <div className="gallery" data-testid="image-array">
       {images.map((img, index) => {
         const imageUrl = img.src_l || img.src_o || img.src_m || img.src_s;
   
@@ -124,6 +124,7 @@ function Infinite() {
           <div key={index} 
             className={`image-item ${activeItem === index ? 'is-active' : 'not-active'}`} 
             onClick={() => handleImageClick(index)}
+            data-testid="image-item"
           >
             <img 
               src={img.src_l || img.src_o}
@@ -135,7 +136,7 @@ function Infinite() {
               sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={img.title}
               loading="lazy"
-              
+              data-testid="image"
             />
             <div className="credentials">
               <span />

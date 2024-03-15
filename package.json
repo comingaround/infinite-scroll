@@ -37,8 +37,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
     "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
+    "jest-mock-fetch": "^2.0.5",
     "jsdom-testing-mocks": "^1.13.0"
   }
 }
