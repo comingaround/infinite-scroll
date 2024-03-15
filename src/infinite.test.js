@@ -1,10 +1,9 @@
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { mockIntersectionObserver } from 'jsdom-testing-mocks';
 import React from 'react';
 import Infinite from "./components/infinite/infinite"
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
-import { convert } from "./currency_test/currency";
 
 // Intersection observer
 mockIntersectionObserver()
@@ -24,20 +23,3 @@ describe('Infinite Component', () => {
     expect(imageArray).toBeInTheDocument();
   });
 });
-
-
-// third attempt
-beforeEach(() => {
-  fetch.resetMocks();
-});
-
-it("finds exchange", async () => {
-  fetch.mockResponseOnce(JSON.stringify({ rates: { CAD: 1.42 } }));
-
-  const rate = await convert("USD", "CAD");
-
-  expect(rate).toEqual(1.42);
-  expect(fetch).toHaveBeenCalledTimes(1);
-});
-
-

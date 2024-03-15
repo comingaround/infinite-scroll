@@ -38,26 +38,19 @@ function Infinite() {
     setIsFetching(true); 
     const tags = 'scifi-art';
     const perPage = 12;
-    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_s,url_m,url_l,url_o,url,width_s,height_s,width_m,height_m,width_l,height_l,width_o,height_o,owner_name&sort=interestingness_desc`;
+    const URL = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&tags=${tags}&per_page=${perPage}&page=${page}&format=json&nojsoncallback=1&extras=url_s,url_m,url_l,url_o,url,owner_name&sort=interestingness_desc`;
   
     fetch(URL)
       .then(response => response.json())
       .then(data => {
         const newImages = data.photos.photo.map(photo => {
-          console.log(`Image dimensions - Small: ${photo.width_s}x${photo.height_s}, Medium: ${photo.width_m}x${photo.height_m}, Large: ${photo.width_l}x${photo.height_l}, Default: ${photo.width_o}x${photo.height_o}, Title ${photo.title}`);
+          console.log(`Title: ${photo.title}, ID: ${photo.id}`);
           return {
+            ...photo,
             src_s: photo.url_s,
-            width_s: photo.width_s,
-            height_s: photo.height_s,
             src_m: photo.url_m,
-            width_m: photo.width_m,
-            height_m: photo.height_m,
             src_l: photo.url_l,
-            width_l: photo.width_l,
-            height_l: photo.height_l,
             src_o: photo.url_o,
-            width_o: photo.width_o,
-            height_o: photo.height_o,
             title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
             author: photo.ownername,
           };
@@ -157,7 +150,7 @@ function Infinite() {
                   <button onClick={(e) => {
                     e.stopPropagation();
                     toggleFavoriteStatus(imageUrl);
-                  }}>Favorites</button>
+                  }}>Favorite</button>
                 )}
               </div>
             </div>
@@ -176,5 +169,3 @@ function Infinite() {
 }
 
 export default Infinite;
-
-
