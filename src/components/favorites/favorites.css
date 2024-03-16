@@ -6,7 +6,9 @@
     position: fixed;
     bottom: 20px;
     right: 0px;
-    width: 128px;
+    width: auto;
+    gap: 12px;
+    padding: 0 16px;
     height: 48px;
     z-index: 11;
     border-top-left-radius: 13px;
@@ -62,6 +64,21 @@
 svg {
     cursor: pointer;
     padding-top: 4px;
+}
+.favorites_on {
+    position: relative;
+}
+.favorites > div:nth-child(1) > p {
+    position: absolute;
+    text-wrap: nowrap;
+    top: -36px;
+    right: 64px;
+    width: auto;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: white;
+    padding: 0 8px;
+    display: none;
 }
 @media (max-width: 1560px) {
     .favorites_array {

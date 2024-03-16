@@ -47,10 +47,6 @@ function Infinite() {
           console.log(`Title: ${photo.title}, ID: ${photo.id}`);
           return {
             ...photo,
-            src_s: photo.url_s,
-            src_m: photo.url_m,
-            src_l: photo.url_l,
-            src_o: photo.url_o,
             title: photo.title.length > 50 ? photo.title.substring(0, 50) + '...' : photo.title,
             author: photo.ownername,
           };
@@ -110,7 +106,7 @@ function Infinite() {
   return (
     <div className="gallery" data-testid="image-array">
       {images.map((img, index) => {
-        const imageUrl = img.src_l || img.src_o || img.src_m || img.src_s;
+        const imageUrl = img.url_l || img.url_o || img.url_m || img.url_s;
   
         return (
           <div key={index} 
@@ -119,11 +115,11 @@ function Infinite() {
             data-testid="image-item"
           >
             <img 
-              src={img.src_l || img.src_o}
+              src={img.url_l || img.url_o}
               srcSet={`
-                ${img.src_s} 526w, 
-                ${img.src_m} 1024w
-                ${img.src_l ? `, ${img.src_l} 2048w` : img.src_o ? `, ${img.src_o} 2048w` : ''}
+                ${img.url_s} 526w, 
+                ${img.url_m} 1024w
+                ${img.url_l ? `, ${img.url_l} 2048w` : img.url_o ? `, ${img.url_o} 2048w` : ''}
               `} 
               sizes="(max-width: 526px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={img.title}
@@ -141,7 +137,7 @@ function Infinite() {
                 <h3>{img.author}</h3>
               </section>
               <div className='favorite'>
-                {!favorites[img.src_l || img.src_o || img.src_m || img.src_s] ? (
+                {!favorites[imageUrl] ? (
                   <button onClick={(e) => {
                     e.stopPropagation();
                     toggleFavoriteStatus(imageUrl);

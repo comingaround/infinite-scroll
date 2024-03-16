@@ -1,29 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "./favorites.css";
 import ToTop from "../toTop/toTop";
 
 function Favorites() {
     const [favorites, setFavorites] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
+    const favoritesRef = useRef(null);
+
     const fetchFavorites = () => {
         const savedFavorites = JSON.parse(localStorage.getItem('favoriteImages')) || [];
         setFavorites(savedFavorites);
     };
     const toggleFavoritesVisibility = () => {
-        setIsVisible(!isVisible);
-        fetchFavorites();
+        if(isVisible) {
+            setIsVisible(false);
+        } else {
+            setIsVisible(true);
+            fetchFavorites();
+        }
     };
+
     useEffect(() => {
         fetchFavorites();
+
+        const handleClickOutside = (event) => {
+            if (favoritesRef.current && !favoritesRef.current.contains(event.target)) {
+                setIsVisible(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
+
     const removeFavorite = (indexToRemove) => {
         const updatedFavorites = favorites.filter((_, index) => index !== indexToRemove);
         setFavorites(updatedFavorites);
         localStorage.setItem('favoriteImages', JSON.stringify(updatedFavorites));
-      };
+    };
 
     return (
-        <>
+        <div ref={favoritesRef}>
             <div className="favorites">
                 <div className={isVisible ? "favorites_on" : ""} onClick={toggleFavoritesVisibility}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="black" className="bi bi-heart" viewBox="0 0 16 16">
@@ -47,7 +67,7 @@ function Favorites() {
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
 
